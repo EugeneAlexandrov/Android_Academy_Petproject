@@ -4,25 +4,46 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.cardview.widget.CardView
 
-class MainActivity : AppCompatActivity() {
-
-    private var moviesListFragment: FragmentMoviesList? = null
+class MainActivity : AppCompatActivity(), MovieClickListener {
+    private var detailFragment: FragmentMovieDetails? = null
+    private var listFragment: FragmentMoviesList? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            moviesListFragment = FragmentMoviesList()
-            moviesListFragment?.apply {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, this, FRAGMENT_LIST_TAG)
-                    .commit()
-            }
-        } else moviesListFragment =
-            supportFragmentManager.findFragmentByTag(FRAGMENT_LIST_TAG) as? FragmentMoviesList
+            initMovieListFragment()
+        } else {
+            listFragment =
+                supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_LIST) as FragmentMoviesList
+        }
+    }
+
+    private fun initMovieListFragment() {
+        listFragment = FragmentMoviesList()
+        listFragment?.apply {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, this, TAG_FRAGMENT_LIST)
+                .addToBackStack(null)
+                .commit()
+        }
+
+    }
+
+    override fun showDetails() {
+        detailFragment = FragmentMovieDetails()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, FragmentMovieDetails(), TAG_FRAGMENT_DETAILS)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun showMovieList() {
+        supportFragmentManager.popBackStack()
     }
 
     companion object {
-        const val FRAGMENT_LIST_TAG = "LIST_FRAGMENT"
+        const val TAG_FRAGMENT_LIST = "ListFragment"
+        const val TAG_FRAGMENT_DETAILS = "DetailsFragment"
     }
 }
