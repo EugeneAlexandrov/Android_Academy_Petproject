@@ -8,17 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.mybclym.androidacademy.petproject.Domain.MovieDataSource
 
 /**
  * A simple [Fragment] subclass.
  */
 class FragmentMoviesList : Fragment() {
+    // контекст фрагмента активити имплементит OnMovieClickListener
+    private var movieClickListener: OnMovieClickListener? = null
+    private var recycler: RecyclerView? = null
 
-    private var movieClickListener: MovieClickListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MovieClickListener) {
+        if (context is OnMovieClickListener) {
+            //инициализируем лисенер
             movieClickListener = context
         }
     }
@@ -32,21 +38,19 @@ class FragmentMoviesList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<CardView>(R.id.movie_item).apply {
-            setOnClickListener {
-                movieClickListener?.showDetails()
-            }
-        }
+        //если movieClickListener !=null создаем адаптер
+        //поркидываем дальше лисенер
+        val adapter = movieClickListener?.let { MovieAdapter(it) }
+        adapter?.setUpMoviesList(MovieDataSource.getMovies())
+        recycler = view.findViewById(R.id.movie_list_rv)
+        recycler?.adapter = adapter
     }
 
     override fun onDetach() {
         super.onDetach()
+        //отвязываем лисенер и ресайклер
         movieClickListener = null
+        recycler = null
     }
-}
-
-interface MovieClickListener {
-    fun showDetails()
-    fun showMovieList()
 }
 

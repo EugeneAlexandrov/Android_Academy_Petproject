@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.cardview.widget.CardView
 
-class MainActivity : AppCompatActivity(), MovieClickListener {
+//имплементим листенер для проброса из фрагментов и адаптера
+class MainActivity : AppCompatActivity(), OnMovieClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,17 +17,30 @@ class MainActivity : AppCompatActivity(), MovieClickListener {
 
     private fun initMovieListFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, FragmentMoviesList(), TAG_FRAGMENT_LIST)
+            .replace(
+                R.id.fragment_container,
+                FragmentMoviesList(),
+                TAG_FRAGMENT_LIST
+            )
             .commit()
     }
 
-    override fun showDetails() {
+    /*
+    вызываем в адаптере через OnMovieClickListener()
+    id берется из листа и позиции в холдере
+    * */
+    override fun showDetails(id: Int) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, FragmentMovieDetails(), TAG_FRAGMENT_DETAILS)
+            .replace(
+                R.id.fragment_container,
+                FragmentMovieDetails.newInstance(id),
+                TAG_FRAGMENT_DETAILS
+            )
             .addToBackStack(null)
             .commit()
     }
 
+    //вызываем в адаптере через OnMovieClickListener()
     override fun showMovieList() {
         this.onBackPressed()
     }
