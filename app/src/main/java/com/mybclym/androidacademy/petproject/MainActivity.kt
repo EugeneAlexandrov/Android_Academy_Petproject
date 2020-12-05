@@ -17,11 +17,7 @@ class MainActivity : AppCompatActivity(), OnMovieClickListener {
 
     private fun initMovieListFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.fragment_container,
-                FragmentMoviesList(),
-                TAG_FRAGMENT_LIST
-            )
+            .replace(R.id.fragment_container, FragmentMoviesList(), TAG_FRAGMENT_LIST)
             .commit()
     }
 
