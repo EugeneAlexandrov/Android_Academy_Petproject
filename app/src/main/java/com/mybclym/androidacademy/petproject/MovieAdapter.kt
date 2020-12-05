@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Movie
 
 //у адаптера есть ссылка на листенер, чтобы запустить фрагмент из активити
-class MovieAdapter(val movieClickListener: OnMovieClickListener) :
+class MovieAdapter(val movieClickListener: OnMovieClickListener?) :
     RecyclerView.Adapter<ItemMovieViewHolder>() {
 
     private var moviesList = listOf<Movie>()
@@ -24,7 +24,10 @@ class MovieAdapter(val movieClickListener: OnMovieClickListener) :
 
     override fun onBindViewHolder(holder: ItemMovieViewHolder, position: Int) {
         //в адаптере есть список фильмов, передаем в холдер фильм по позиции
-        holder.bind(moviesList[position], movieClickListener)
+        holder.bind(moviesList[position])
+        holder.itemView.setOnClickListener {
+            movieClickListener?.showDetails(moviesList[position].id)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -50,16 +53,11 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val title: TextView? = itemView.findViewById(R.id.title)
     private val duration: TextView? = itemView.findViewById(R.id.duration_tv)
 
-    fun bind(movie: Movie, onMovieClickListener: OnMovieClickListener) {
+    fun bind(movie: Movie) {
         Glide.with(itemView.context)
             .load(movie.poster)
             .apply(imageOption)
             .into(poster)
-
-        itemView.setOnClickListener {
-            //вызываем метод активити для обращения к FragmentManager
-            onMovieClickListener.showDetails(movie.id)
-        }
 
         ageRestriction?.text = movie.age
         reviews?.text = movie.reviewsCount.toString()

@@ -40,7 +40,7 @@ class FragmentMoviesList : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //если movieClickListener !=null создаем адаптер
         //поркидываем дальше лисенер
-        val adapter = movieClickListener?.let { MovieAdapter(it) }
+        val adapter = MovieAdapter(movieClickListener)
         adapter?.setUpMoviesList(MovieDataSource.getMovies())
         recycler = view.findViewById(R.id.movie_list_rv)
         recycler?.adapter = adapter
