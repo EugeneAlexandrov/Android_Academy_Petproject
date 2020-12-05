@@ -2,4 +2,6 @@
 <resources>
     <dimen name="border_padding">16dp</dimen>
     <dimen name="content_padding">8dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_elevation">10dp</dimen>
 </resources>
