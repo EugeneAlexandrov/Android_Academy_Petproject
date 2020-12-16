@@ -10,16 +10,19 @@ import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mybclym.androidacademy.petproject.Domain.MovieDataSource
+import com.mybclym.androidacademy.petproject.DataModel.Movie
+import com.mybclym.androidacademy.petproject.DataModel.loadMovies
+import kotlinx.coroutines.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : BaseFragment() {
     // контекст фрагмента активити имплементит OnMovieClickListener
     private var movieClickListener: OnMovieClickListener? = null
     private var recycler: RecyclerView? = null
-
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private var movieList: MutableList<Movie> = mutableListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,9 +44,15 @@ class FragmentMoviesList : Fragment() {
         //если movieClickListener !=null создаем адаптер
         //поркидываем дальше лисенер
         val adapter = MovieAdapter(movieClickListener)
-        adapter?.setUpMoviesList(MovieDataSource.getMovies())
         recycler = view.findViewById(R.id.movie_list_rv)
-        recycler?.adapter = adapter
+        scope.launch {
+            val movieDataSoutce=dataProvider?.dataSource()
+            movieList = movieDataSoutce.getMoviesAsync()
+            withContext(Dispatchers.Main) {
+                adapter?.setUpMoviesList(movieList)
+                recycler?.adapter = adapter
+            }
+        }
     }
 
     override fun onDetach() {
@@ -51,6 +60,7 @@ class FragmentMoviesList : Fragment() {
         //отвязываем лисенер и ресайклер
         movieClickListener = null
         recycler = null
+        scope.cancel()
     }
 }
 

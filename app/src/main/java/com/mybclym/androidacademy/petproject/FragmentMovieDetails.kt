@@ -10,13 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mybclym.androidacademy.petproject.DataModel.Movie
-import com.mybclym.androidacademy.petproject.Domain.MovieDataSource
 
 /**
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class FragmentMovieDetails : Fragment() {
+class FragmentMovieDetails : BaseFragment() {
     //фрагменту нужна ссылка на листенер, чтобы вернуться назад
     private var movieClickListener: OnMovieClickListener? = null
     private var movieId: Int = 0
@@ -28,6 +27,7 @@ class FragmentMovieDetails : Fragment() {
     private lateinit var genre: TextView
     private lateinit var title: TextView
     private lateinit var storyLine: TextView
+    private lateinit var actorsRecyclerView: RecyclerView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,7 +41,7 @@ class FragmentMovieDetails : Fragment() {
         //id фильма пробрасывается от адаптера до активити и из активити в фрагмент
         arguments?.let {
             movieId = it.getInt(PARAM_MOVIE_ID, 0)
-            movie = MovieDataSource.findMovieByID(movieId)
+//            movie = MovieDataSource.findMovieByID(movieId)
         }
     }
 
@@ -59,17 +59,17 @@ class FragmentMovieDetails : Fragment() {
                 movieClickListener?.showMovieList()
             }
         }
-        poster = view.findViewById(R.id.background_poster_iv)
-        ageRestriction = view.findViewById(R.id.age_restrictions_tv)
-        ageRestriction.text = movie.age
-        reviews = view.findViewById(R.id.reviews_count_tv)
-        reviews.text = movie.reviewsCount.toString()
-        genre = view.findViewById(R.id.movie_genre_tv)
-        genre.text = movie.genre.joinToString()
-        title = view.findViewById(R.id.title_tv)
-        title.text = movie.title
-        storyLine = view.findViewById(R.id.storyline_tv)
-        storyLine.text = movie.storyLine
+//        poster = view.findViewById(R.id.background_poster_iv)
+//        ageRestriction = view.findViewById(R.id.age_restrictions_tv)
+//        ageRestriction.text = movie.age
+//        reviews = view.findViewById(R.id.reviews_count_tv)
+//        reviews.text = movie.reviewsCount.toString()
+//        genre = view.findViewById(R.id.movie_genre_tv)
+//        genre.text = movie.genre.joinToString()
+//        title = view.findViewById(R.id.title_tv)
+//        title.text = movie.title
+//        storyLine = view.findViewById(R.id.storyline_tv)
+//        storyLine.text = movie.storyLine
     }
 
     override fun onDetach() {

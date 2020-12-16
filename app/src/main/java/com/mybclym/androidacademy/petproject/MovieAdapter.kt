@@ -8,7 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.mybclym.androidacademy.petproject.DataModel.Genre
 import com.mybclym.androidacademy.petproject.DataModel.Movie
+import java.lang.StringBuilder
 
 //у адаптера есть ссылка на листенер, чтобы запустить фрагмент из активити
 class MovieAdapter(val movieClickListener: OnMovieClickListener?) :
@@ -50,8 +52,9 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val ageRestriction: TextView? = itemView.findViewById(R.id.age_restrictions_tv)
     private val reviews: TextView? = itemView.findViewById(R.id.reviews_count_tv)
     private val genre: TextView? = itemView.findViewById(R.id.movie_genre_tv)
-    private val title: TextView? = itemView.findViewById(R.id.title)
+    private val title: TextView? = itemView.findViewById(R.id.title_tv)
     private val duration: TextView? = itemView.findViewById(R.id.duration_tv)
+    private val sb: StringBuilder = StringBuilder()
 
     fun bind(movie: Movie) {
         Glide.with(itemView.context)
@@ -59,11 +62,12 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .apply(imageOption)
             .into(poster)
 
-        ageRestriction?.text = movie.age
-        reviews?.text = movie.reviewsCount.toString()
-        genre?.text = movie.genre.joinToString()
+        ageRestriction?.text =
+            itemView.context.getString(R.string.age_restriction, movie.minimumAge)
+        reviews?.text = movie.numberOfRatings.toString()
+        genre?.text = printGenres(movie.genres)
         title?.text = movie.title
-        duration?.text = movie.duration.toString()
+        duration?.text = movie.runtime.toString()
     }
 
     companion object {
@@ -71,5 +75,15 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .placeholder(R.drawable.no_image)
             .fallback(R.drawable.no_image)
             .fitCenter()
+    }
+
+    private fun printGenres(genres: List<Genre>): String {
+        var sb = StringBuilder()
+        for (i in 0 until genres.size - 1) {
+            sb.append(genres[i].name)
+            sb.append(", ")
+        }
+        sb.append(genres[genres.lastIndex].name)
+        return sb.toString()
     }
 }
