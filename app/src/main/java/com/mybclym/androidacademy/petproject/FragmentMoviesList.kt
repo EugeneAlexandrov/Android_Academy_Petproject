@@ -22,7 +22,8 @@ class FragmentMoviesList : BaseFragment() {
     private var movieClickListener: OnMovieClickListener? = null
     private var recycler: RecyclerView? = null
     private val scope = CoroutineScope(Dispatchers.IO)
-    private var movieList: MutableList<Movie> = mutableListOf()
+    private var movieList: List<Movie> = emptyList()
+    private var moviesDataSource: MoviesDataSource? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,10 +47,10 @@ class FragmentMoviesList : BaseFragment() {
         val adapter = MovieAdapter(movieClickListener)
         recycler = view.findViewById(R.id.movie_list_rv)
         scope.launch {
-            val movieDataSoutce=dataProvider?.dataSource()
-            movieList = movieDataSoutce.getMoviesAsync()
+            moviesDataSource = dataProvider?.dataSource()
+            movieList = moviesDataSource?.getMoviesAsync()!!
             withContext(Dispatchers.Main) {
-                adapter?.setUpMoviesList(movieList)
+                adapter.setUpMoviesList(movieList)
                 recycler?.adapter = adapter
             }
         }
@@ -58,6 +59,7 @@ class FragmentMoviesList : BaseFragment() {
     override fun onDetach() {
         super.onDetach()
         //отвязываем лисенер и ресайклер
+        moviesDataSource = null
         movieClickListener = null
         recycler = null
         scope.cancel()

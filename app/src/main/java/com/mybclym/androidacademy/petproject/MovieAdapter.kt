@@ -65,7 +65,7 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         ageRestriction?.text =
             itemView.context.getString(R.string.age_restriction, movie.minimumAge)
         reviews?.text = movie.numberOfRatings.toString()
-        genre?.text = printGenres(movie.genres)
+        genre?.text = movie.genres.joinToString { it.name }
         title?.text = movie.title
         duration?.text = movie.runtime.toString()
     }
@@ -75,15 +75,5 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .placeholder(R.drawable.no_image)
             .fallback(R.drawable.no_image)
             .fitCenter()
-    }
-
-    private fun printGenres(genres: List<Genre>): String {
-        var sb = StringBuilder()
-        for (i in 0 until genres.size - 1) {
-            sb.append(genres[i].name)
-            sb.append(", ")
-        }
-        sb.append(genres[genres.lastIndex].name)
-        return sb.toString()
     }
 }

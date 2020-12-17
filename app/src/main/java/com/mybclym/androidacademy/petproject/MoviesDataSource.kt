@@ -15,11 +15,11 @@ class MoviesDataSourceImpl(private val context: Context) : MoviesDataSource {
 
     override suspend fun getMoviesAsync(): List<Movie> =
         withContext(Dispatchers.IO) {
-            loadMovies(context).toMutableList()
+            loadMovies(context)
         }
 
     override suspend fun getMovieByIdAsync(movieId: Int): Movie? =
         withContext(Dispatchers.IO) {
-            loadMovies(context).toMutableList().find { movieId == it.id }
+            loadMovies(context).find { movieId == it.id }
         }
 }
