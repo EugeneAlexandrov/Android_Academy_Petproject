@@ -85,10 +85,10 @@ class FragmentMovieDetails : BaseFragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
         movieClickListener = null
         scope.cancel()
         actorsRecyclerView = null
+        super.onDetach()
     }
 
     private fun findViews(view: View) {

@@ -53,12 +53,12 @@ class FragmentMoviesList : BaseFragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
         //отвязываем лисенер и ресайклер
         moviesDataSource = null
         movieClickListener = null
         recycler = null
         scope.cancel()
+        super.onDetach()
     }
 }
 
