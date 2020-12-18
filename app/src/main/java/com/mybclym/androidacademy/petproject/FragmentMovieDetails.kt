@@ -63,10 +63,9 @@ class FragmentMovieDetails : BaseFragment() {
             movie = dataProvider?.dataSource()?.getMovieByIdAsync(movieId)!!
             val adapter = ActorAdapter()
             adapter.setUpActorsList(movie.actors)
-
             withContext(Dispatchers.Main) {
                 actorsRecyclerView?.adapter = adapter
-                actorsRecyclerView?.addItemDecoration(VerticalSpaceItemDecoration())
+                actorsRecyclerView?.addItemDecoration(HorisontalSpaceItemDecoration())
                 storyLine.text = movie.overview
                 ageRestriction.text = movie.minimumAge.toString()
                 reviews.text = movie.numberOfRatings.toString()
@@ -76,10 +75,8 @@ class FragmentMovieDetails : BaseFragment() {
                     .load(movie.backdrop)
                     .apply(imageOption)
                     .into(poster)
-
             }
         }
-
         view.findViewById<TextView>(R.id.back_btn_tv).apply {
             setOnClickListener {
                 movieClickListener?.showMovieList()
@@ -124,7 +121,7 @@ class FragmentMovieDetails : BaseFragment() {
         }
     }
 
-    private class VerticalSpaceItemDecoration : RecyclerView.ItemDecoration() {
+    private class HorisontalSpaceItemDecoration : RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(
             outRect: Rect,

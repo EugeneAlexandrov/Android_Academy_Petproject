@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.mybclym.androidacademy.petproject.DataModel.Genre
 import com.mybclym.androidacademy.petproject.DataModel.Movie
 import java.lang.StringBuilder
 

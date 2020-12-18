@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Actor
-import com.mybclym.androidacademy.petproject.DataModel.Genre
-import com.mybclym.androidacademy.petproject.DataModel.Movie
-import java.lang.StringBuilder
 
 //у адаптера есть ссылка на листенер, чтобы запустить фрагмент из активити
 class ActorAdapter() :
