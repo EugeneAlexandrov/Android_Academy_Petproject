@@ -10,28 +10,27 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Actor
 
-//у адаптера есть ссылка на листенер, чтобы запустить фрагмент из активити
-class ActorAdapter() :
-    RecyclerView.Adapter<ItemActorViewHolder>() {
+class ActorAdapter() : RecyclerView.Adapter<ItemActorViewHolder>() {
 
-    private var actorsList = listOf<Actor>()
+    private var actorsList: List<Actor>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemActorViewHolder {
         return ItemActorViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.actor_item, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.actor_item, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: ItemActorViewHolder, position: Int) {
-        //в адаптере есть список фильмов, передаем в холдер фильм по позиции
-        holder.bind(actorsList[position])
+        //в адаптере есть список актеров, передаем в холдер актера по позиции
+        holder.bind(actorsList?.get(position))
     }
 
     override fun getItemCount(): Int {
-        return actorsList.size
+        return actorsList?.size ?: 0
     }
 
-    fun setUpActorsList(actors: List<Actor>) {
+    fun setUpActorsList(actors: List<Actor>?) {
         actorsList = actors
     }
 }
@@ -41,13 +40,12 @@ class ItemActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val image: ImageView? = itemView.findViewById(R.id.actor_iv)
     private val name: TextView? = itemView.findViewById(R.id.actor_tv)
 
-    fun bind(actor: Actor) {
+    fun bind(actor: Actor?) {
         Glide.with(itemView.context)
-            .load(actor.picture)
+            .load(actor?.picture)
             .apply(imageOption)
             .into(image)
-
-        name?.text = actor.name
+        name?.text = actor?.name
     }
 
     companion object {

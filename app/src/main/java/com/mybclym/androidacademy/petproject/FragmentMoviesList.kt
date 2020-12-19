@@ -8,18 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mybclym.androidacademy.petproject.DataModel.Movie
+import com.mybclym.androidacademy.petproject.DataModel.loadMovies
 import kotlinx.coroutines.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class FragmentMoviesList : BaseFragment() {
-    // контекст фрагмента активити имплементит OnMovieClickListener
+    // контекст фрагмента - активити, имплементит OnMovieClickListener
     private var movieClickListener: OnMovieClickListener? = null
     private var recycler: RecyclerView? = null
     private val scope = CoroutineScope(Dispatchers.IO)
-    private var movieList: List<Movie> = emptyList()
+    private lateinit var movieList: List<Movie>
     private var moviesDataSource: MoviesDataSource? = null
+    private lateinit var movieAdapter: MovieAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,17 +40,27 @@ class FragmentMoviesList : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //если movieClickListener !=null создаем адаптер
-        //поркидываем дальше лисенер
-        val adapter = MovieAdapter(movieClickListener)
+        findView(view)
+        loadMoviesList()
+    }
+
+    private fun findView(view: View) {
         recycler = view.findViewById(R.id.movie_list_rv)
+    }
+
+    private fun loadMoviesList() {
         scope.launch {
-            moviesDataSource = dataProvider?.dataSource()
-            movieList = moviesDataSource?.getMoviesAsync()!!
-            withContext(Dispatchers.Main) {
-                adapter.setUpMoviesList(movieList)
-                recycler?.adapter = adapter
-            }
+            movieList = dataProvider?.dataSource()?.getMoviesAsync() ?: emptyList()
+            bindView()
+        }
+    }
+
+    private suspend fun bindView() {
+        withContext(Dispatchers.Main) {
+            //прокидываем дальше лисенер
+            movieAdapter = MovieAdapter(movieClickListener)
+            movieAdapter.setUpMoviesList(movieList)
+            recycler?.adapter = movieAdapter
         }
     }
 

@@ -12,7 +12,7 @@ import com.mybclym.androidacademy.petproject.DataModel.Movie
 import java.lang.StringBuilder
 
 //у адаптера есть ссылка на листенер, чтобы запустить фрагмент из активити
-class MovieAdapter(val movieClickListener: OnMovieClickListener?) :
+class MovieAdapter(private val movieClickListener: OnMovieClickListener?) :
     RecyclerView.Adapter<ItemMovieViewHolder>() {
 
     private var moviesList = listOf<Movie>()
@@ -53,7 +53,6 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val genre: TextView? = itemView.findViewById(R.id.movie_genre_tv)
     private val title: TextView? = itemView.findViewById(R.id.title_tv)
     private val duration: TextView? = itemView.findViewById(R.id.duration_tv)
-    private val sb: StringBuilder = StringBuilder()
 
     fun bind(movie: Movie) {
         Glide.with(itemView.context)

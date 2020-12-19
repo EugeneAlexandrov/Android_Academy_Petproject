@@ -23,7 +23,7 @@ class FragmentMovieDetails : BaseFragment() {
     //фрагменту нужна ссылка на листенер, чтобы вернуться назад
     private var movieClickListener: OnMovieClickListener? = null
     private var movieId: Int = 0
-    private lateinit var movie: Movie
+    private var movie: Movie? = null
     private val scope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var poster: ImageView
@@ -33,19 +33,12 @@ class FragmentMovieDetails : BaseFragment() {
     private lateinit var title: TextView
     private lateinit var storyLine: TextView
     private var actorsRecyclerView: RecyclerView? = null
+    private var actorAdapter: ActorAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnMovieClickListener) {
             movieClickListener = context
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //id фильма пробрасывается от адаптера до активити и из активити в фрагмент
-        arguments?.let {
-            movieId = it.getInt(PARAM_MOVIE_ID, 0)
         }
     }
 
@@ -58,25 +51,10 @@ class FragmentMovieDetails : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //id фильма пробрасывается от адаптера до активити и из активити в фрагмент
+        val movieId = movieID() ?: 0
         findViews(view)
-        scope.launch {
-            movie = dataProvider?.dataSource()?.getMovieByIdAsync(movieId)!!
-            val adapter = ActorAdapter()
-            adapter.setUpActorsList(movie.actors)
-            withContext(Dispatchers.Main) {
-                actorsRecyclerView?.adapter = adapter
-                actorsRecyclerView?.addItemDecoration(HorisontalSpaceItemDecoration())
-                storyLine.text = movie.overview
-                ageRestriction.text = movie.minimumAge.toString()
-                reviews.text = movie.numberOfRatings.toString()
-                genre.text = movie.genres.joinToString { it.name }
-                title.text = movie.title
-                Glide.with(view.context)
-                    .load(movie.backdrop)
-                    .apply(imageOption)
-                    .into(poster)
-            }
-        }
+        loadMovie(movieId)
         view.findViewById<TextView>(R.id.back_btn_tv).apply {
             setOnClickListener {
                 movieClickListener?.showMovieList()
@@ -100,6 +78,38 @@ class FragmentMovieDetails : BaseFragment() {
         title = view.findViewById(R.id.title_tv)
         storyLine = view.findViewById(R.id.storyline_tv)
     }
+
+    private fun loadMovie(movieId: Int) {
+        scope.launch {
+            movie = dataProvider?.dataSource()?.getMovieByIdAsync(movieId)
+            bindViews(movie)
+        }
+    }
+
+    private suspend fun bindViews(movie: Movie?) {
+        withContext(Dispatchers.Main) {
+            actorAdapter = ActorAdapter()
+            actorAdapter?.setUpActorsList(movie?.actors)
+            actorsRecyclerView?.adapter = actorAdapter
+            actorsRecyclerView?.addItemDecoration(HorisontalSpaceItemDecoration())
+            storyLine.text = movie?.overview
+            ageRestriction.text = movie?.minimumAge.toString()
+            reviews.text = movie?.numberOfRatings.toString()
+            genre.text = movie?.let {
+                it.genres.joinToString { genre -> genre.name }
+            }
+            title.text = movie?.title
+            Glide.with(view?.context)
+                .load(movie?.backdrop)
+                .apply(imageOption)
+                .into(poster)
+        }
+    }
+
+    private fun movieID(): Int? =
+        arguments?.let {
+            it.getInt(PARAM_MOVIE_ID, 0)
+        }
 
     companion object {
         private const val PARAM_MOVIE_ID = "movie_ID"
@@ -134,7 +144,6 @@ class FragmentMovieDetails : BaseFragment() {
             ) {
                 outRect.right = 24
             }
-//            super.getItemOffsets(outRect, view, parent, state)
         }
     }
 }
