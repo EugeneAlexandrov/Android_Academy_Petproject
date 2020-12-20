@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backround" />
+        tools:srcCompat="@drawable/backround" />
 
     <TextView
         android:id="@+id/back_btn_tv"
@@ -44,11 +44,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/border_padding"
-        android:layout_marginTop="222dp"
         android:text="@string/age_restriction"
         android:textColor="@color/colorWhite"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/title_tv"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/title_tv"
@@ -169,7 +168,6 @@
         android:layout_marginHorizontal="@dimen/border_padding"
         android:layout_marginVertical="@dimen/content_padding"
         android:fontFamily="@font/roboto_thin"
-        android:text="@string/storyline_text"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -187,89 +185,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storyline_tv" />
 
-    <ImageView
-        android:id="@+id/actor1_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="@dimen/border_padding"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/actors_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/border_padding"
         android:layout_marginTop="@dimen/content_padding"
-        app:layout_constraintEnd_toStartOf="@+id/actor3_iv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cast_hardcode_tv"
-        app:srcCompat="@drawable/actor_1" />
-
-    <ImageView
-        android:id="@+id/actor2_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:layout_constraintEnd_toStartOf="@+id/actor4_iv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/actor3_iv"
-        app:layout_constraintTop_toTopOf="@+id/actor1_iv"
-        app:srcCompat="@drawable/actor_2" />
-
-    <ImageView
-        android:id="@+id/actor3_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:layout_constraintEnd_toStartOf="@+id/actor2_iv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/actor1_iv"
-        app:layout_constraintTop_toTopOf="@+id/actor1_iv"
-        app:srcCompat="@drawable/actor_3" />
-
-    <ImageView
-        android:id="@+id/actor4_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="@dimen/border_padding"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/actor2_iv"
-        app:layout_constraintTop_toTopOf="@+id/actor1_iv"
-        app:srcCompat="@drawable/actor_4" />
-
-    <TextView
-        android:id="@+id/actor1_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/actor1"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@+id/actor1_iv"
-        app:layout_constraintStart_toStartOf="@+id/actor1_iv"
-        app:layout_constraintTop_toBottomOf="@+id/actor1_iv" />
-
-    <TextView
-        android:id="@+id/actor2_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/actor2"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@+id/actor3_iv"
-        app:layout_constraintStart_toStartOf="@+id/actor3_iv"
-        app:layout_constraintTop_toBottomOf="@+id/actor3_iv" />
-
-    <TextView
-        android:id="@+id/actor3_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/actor3"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@+id/actor2_iv"
-        app:layout_constraintStart_toStartOf="@+id/actor2_iv"
-        app:layout_constraintTop_toBottomOf="@+id/actor2_iv" />
-
-    <TextView
-        android:id="@+id/actor4_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/actor4"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@id/actor4_iv"
-        app:layout_constraintStart_toStartOf="@+id/actor4_iv"
-        app:layout_constraintTop_toBottomOf="@+id/actor4_iv" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cast_hardcode_tv"
+        tools:listitem="@layout/actor_item" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Android AcademyPetproject</string>
     <string name="navigation_text"><![CDATA[< Back]]></string>
-    <string name="age_restriction">13+</string>
     <string name="title">Avengers: End Game</string>
     <string name="genre">Action, Adventure, Fantasy</string>
     <string name="reviews">125 Reviews</string>
     <string name="storyline_header">Storyline</string>
-    <string name="storyline_text">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
+    <string name="age_restriction">%d+</string>
     <string name="cast_header">Cast</string>
     <string name="actor1">Robert Downey Jr.</string>
     <string name="actor2">Chris Evans</string>

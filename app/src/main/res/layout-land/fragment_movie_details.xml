@@ -173,7 +173,6 @@
             android:layout_marginHorizontal="@dimen/border_padding"
             android:layout_marginVertical="@dimen/content_padding"
             android:fontFamily="@font/roboto_thin"
-            android:text="@string/storyline_text"
             android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
