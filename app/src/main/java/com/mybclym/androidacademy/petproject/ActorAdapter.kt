@@ -32,6 +32,7 @@ class ActorAdapter() : RecyclerView.Adapter<ItemActorViewHolder>() {
 
     fun setUpActorsList(actors: List<Actor>?) {
         actorsList = actors
+        notifyDataSetChanged()
     }
 }
 

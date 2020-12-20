@@ -46,6 +46,9 @@ class FragmentMoviesList : BaseFragment() {
 
     private fun findView(view: View) {
         recycler = view.findViewById(R.id.movie_list_rv)
+        //прокидываем дальше лисенер
+        movieAdapter = MovieAdapter(movieClickListener)
+        recycler?.adapter = movieAdapter
     }
 
     private fun loadMoviesList() {
@@ -57,10 +60,7 @@ class FragmentMoviesList : BaseFragment() {
 
     private suspend fun bindView() {
         withContext(Dispatchers.Main) {
-            //прокидываем дальше лисенер
-            movieAdapter = MovieAdapter(movieClickListener)
             movieAdapter.setUpMoviesList(movieList)
-            recycler?.adapter = movieAdapter
         }
     }
 

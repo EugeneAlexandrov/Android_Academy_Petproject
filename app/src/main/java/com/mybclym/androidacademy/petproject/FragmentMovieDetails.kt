@@ -71,6 +71,8 @@ class FragmentMovieDetails : BaseFragment() {
 
     private fun findViews(view: View) {
         actorsRecyclerView = view.findViewById(R.id.actors_rv)
+        actorAdapter = ActorAdapter()
+        actorsRecyclerView?.adapter = actorAdapter
         poster = view.findViewById(R.id.background_poster_iv)
         ageRestriction = view.findViewById(R.id.age_restrictions_tv)
         reviews = view.findViewById(R.id.reviews_count_tv)
@@ -88,9 +90,7 @@ class FragmentMovieDetails : BaseFragment() {
 
     private suspend fun bindViews(movie: Movie?) {
         withContext(Dispatchers.Main) {
-            actorAdapter = ActorAdapter()
             actorAdapter?.setUpActorsList(movie?.actors)
-            actorsRecyclerView?.adapter = actorAdapter
             actorsRecyclerView?.addItemDecoration(HorisontalSpaceItemDecoration())
             storyLine.text = movie?.overview
             ageRestriction.text = movie?.minimumAge.toString()

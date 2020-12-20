@@ -37,6 +37,7 @@ class MovieAdapter(private val movieClickListener: OnMovieClickListener?) :
 
     fun setUpMoviesList(movies: List<Movie>) {
         moviesList = movies
+        notifyDataSetChanged()
     }
 }
 
