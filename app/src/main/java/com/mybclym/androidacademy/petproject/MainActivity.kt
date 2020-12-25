@@ -2,7 +2,9 @@ package com.mybclym.androidacademy.petproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.cardview.widget.CardView
+import com.mybclym.androidacademy.petproject.Views.FragmentMovieDetails
+import com.mybclym.androidacademy.petproject.Views.FragmentMoviesList
+import com.mybclym.androidacademy.petproject.Views.OnMovieClickListener
 
 //имплементим листенер для проброса из фрагментов и адаптера
 class MainActivity : AppCompatActivity(), OnMovieClickListener {

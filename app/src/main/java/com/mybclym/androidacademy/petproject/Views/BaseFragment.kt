@@ -1,10 +1,11 @@
-package com.mybclym.androidacademy.petproject
+package com.mybclym.androidacademy.petproject.Views
 
 import android.content.Context
 import androidx.fragment.app.Fragment
+import com.mybclym.androidacademy.petproject.DataProvider
 
 open class BaseFragment : Fragment() {
-    internal var dataProvider: DataProvider? = null
+    lateinit var dataProvider: DataProvider
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -12,10 +13,5 @@ open class BaseFragment : Fragment() {
         if (appContext is DataProvider) {
             dataProvider = appContext
         }
-    }
-
-    override fun onDetach() {
-        dataProvider = null
-        super.onDetach()
     }
 }

@@ -1,8 +1,6 @@
-package com.mybclym.androidacademy.petproject
+package com.mybclym.androidacademy.petproject.DataModel
 
 import android.content.Context
-import com.mybclym.androidacademy.petproject.DataModel.Movie
-import com.mybclym.androidacademy.petproject.DataModel.loadMovies
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -1,4 +1,4 @@
-package com.mybclym.androidacademy.petproject
+package com.mybclym.androidacademy.petproject.Views
 
 import android.content.Context
 import android.graphics.Rect
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Movie
+import com.mybclym.androidacademy.petproject.R
 import kotlinx.coroutines.*
 
 /**
