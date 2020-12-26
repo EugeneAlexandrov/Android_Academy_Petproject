@@ -18,7 +18,7 @@ import com.mybclym.androidacademy.petproject.R
 class FragmentMoviesList : BaseFragment() {
     // контекст фрагмента - активити, имплементит OnMovieClickListener
     private var movieClickListener: OnMovieClickListener? = null
-    private var recycler: RecyclerView? = null
+    private var moviesRecycler: RecyclerView? = null
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var viewModel: MovieListViewModel
 
@@ -45,17 +45,17 @@ class FragmentMoviesList : BaseFragment() {
 
     private fun observeMoviesList() {
         viewModel = ViewModelProvider(
-            this, dataProvider.viewModelFactory()
+            this, dataProvider.movieListViewModelFactory()
         ).get(MovieListViewModel::class.java)
         viewModel.loadMoviesList()
         viewModel.movieList.observe(this.viewLifecycleOwner, this::bindView)
     }
 
     private fun findView(view: View) {
-        recycler = view.findViewById(R.id.movie_list_rv)
+        moviesRecycler = view.findViewById(R.id.movie_list_rv)
         //прокидываем дальше лисенер
         movieAdapter = MovieAdapter(movieClickListener)
-        recycler?.adapter = movieAdapter
+        moviesRecycler?.adapter = movieAdapter
     }
 
     private fun bindView(movieList: List<Movie>) {
@@ -65,7 +65,7 @@ class FragmentMoviesList : BaseFragment() {
     override fun onDetach() {
         //отвязываем лисенер и ресайклер
         movieClickListener = null
-        recycler = null
+        moviesRecycler = null
         super.onDetach()
     }
 }
