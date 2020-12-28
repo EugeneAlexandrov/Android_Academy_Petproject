@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
-    tools:context=".FragmentMoviesList">
+    tools:context=".Views.FragmentMoviesList">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:foregroundTint="@color/colorPink"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topmenu_hardcode_text"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/topmenu_icon"

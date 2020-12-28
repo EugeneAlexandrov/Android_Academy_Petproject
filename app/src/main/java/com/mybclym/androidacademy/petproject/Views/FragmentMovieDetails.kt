@@ -1,19 +1,21 @@
-package com.mybclym.androidacademy.petproject
+package com.mybclym.androidacademy.petproject.Views
 
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Movie
-import kotlinx.coroutines.*
+import com.mybclym.androidacademy.petproject.R
+import com.mybclym.androidacademy.petproject.ViewModels.MovieItemViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -22,9 +24,7 @@ import kotlinx.coroutines.*
 class FragmentMovieDetails : BaseFragment() {
     //фрагменту нужна ссылка на листенер, чтобы вернуться назад
     private var movieClickListener: OnMovieClickListener? = null
-    private var movieId: Int = 0
-    private var movie: Movie? = null
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private lateinit var movieItemViewModel: MovieItemViewModel
 
     private lateinit var poster: ImageView
     private lateinit var ageRestriction: TextView
@@ -34,6 +34,11 @@ class FragmentMovieDetails : BaseFragment() {
     private lateinit var storyLine: TextView
     private var actorsRecyclerView: RecyclerView? = null
     private var actorAdapter: ActorAdapter? = null
+
+    private val imageOption = RequestOptions()
+        .placeholder(R.drawable.no_image)
+        .fallback(R.drawable.no_image)
+        .fitCenter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,19 +57,21 @@ class FragmentMovieDetails : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //id фильма пробрасывается от адаптера до активити и из активити в фрагмент
-        val movieId = movieID() ?: 0
         findViews(view)
-        loadMovie(movieId)
-        view.findViewById<TextView>(R.id.back_btn_tv).apply {
-            setOnClickListener {
-                movieClickListener?.showMovieList()
-            }
+
+        movieItemViewModel = ViewModelProvider(
+            this, dataProvider.moviesViewModelFactory()
+        ).get(MovieItemViewModel::class.java)
+        movieItemViewModel.loadMovieItem(movieID() ?: 0)
+        movieItemViewModel.movieItem.observe(this.viewLifecycleOwner, this::bindViews)
+
+        view.findViewById<TextView>(R.id.back_btn_tv).setOnClickListener {
+            movieClickListener?.showMovieList()
         }
     }
 
     override fun onDetach() {
         movieClickListener = null
-        scope.cancel()
         actorsRecyclerView = null
         super.onDetach()
     }
@@ -82,42 +89,26 @@ class FragmentMovieDetails : BaseFragment() {
         storyLine = view.findViewById(R.id.storyline_tv)
     }
 
-    private fun loadMovie(movieId: Int) {
-        scope.launch {
-            movie = dataProvider?.dataSource()?.getMovieByIdAsync(movieId)
-            bindViews(movie)
+    private fun bindViews(movie: Movie) {
+        actorAdapter?.setUpActorsList(movie.actors)
+        storyLine.text = movie.overview
+        ageRestriction.text = movie.minimumAge.toString()
+        reviews.text = movie.numberOfRatings.toString()
+        genre.text = movie.let {
+            it.genres.joinToString { genre -> genre.name }
         }
-    }
-
-    private suspend fun bindViews(movie: Movie?) {
-        withContext(Dispatchers.Main) {
-            actorAdapter?.setUpActorsList(movie?.actors)
-            storyLine.text = movie?.overview
-            ageRestriction.text = movie?.minimumAge.toString()
-            reviews.text = movie?.numberOfRatings.toString()
-            genre.text = movie?.let {
-                it.genres.joinToString { genre -> genre.name }
-            }
-            title.text = movie?.title
-            Glide.with(view?.context)
-                .load(movie?.backdrop)
-                .apply(imageOption)
-                .into(poster)
-        }
+        title.text = movie.title
+        Glide.with(view?.context)
+            .load(movie.backdrop)
+            .apply(imageOption)
+            .into(poster)
     }
 
     private fun movieID(): Int? =
-        arguments?.let {
-            it.getInt(PARAM_MOVIE_ID, 0)
-        }
+        arguments?.getInt(PARAM_MOVIE_ID, 0)
 
     companion object {
         private const val PARAM_MOVIE_ID = "movie_ID"
-
-        private val imageOption = RequestOptions()
-            .placeholder(R.drawable.no_image)
-            .fallback(R.drawable.no_image)
-            .fitCenter()
 
         //в активити вызывается фрагмент с параметром
         fun newInstance(
@@ -139,7 +130,7 @@ class FragmentMovieDetails : BaseFragment() {
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
-            if (parent.getChildAdapterPosition(view) != (parent.getAdapter()?.getItemCount()
+            if (parent.getChildAdapterPosition(view) != (parent.adapter?.itemCount
                     ?: 0) - 1
             ) {
                 outRect.right = 24

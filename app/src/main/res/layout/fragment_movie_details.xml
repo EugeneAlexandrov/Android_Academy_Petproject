@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
-    tools:context=".FragmentMovieDetails">
+    tools:context=".Views.FragmentMovieDetails">
 
     <ImageView
         android:id="@+id/background_poster_iv"
@@ -56,14 +56,14 @@
         android:layout_margin="@dimen/border_padding"
         android:fontFamily="@font/roboto_bold"
         android:maxLines="2"
-        android:text="@string/title"
         android:textColor="@color/colorWhite"
         android:textSize="45sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/background_poster_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background_poster_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/background_poster_iv"
+        tools:text="@string/title" />
 
     <TextView
         android:id="@+id/movie_genre_tv"
@@ -72,12 +72,12 @@
         android:layout_marginHorizontal="@dimen/border_padding"
         android:layout_marginVertical="@dimen/content_padding"
         android:fontFamily="@font/roboto"
-        android:text="@string/genre"
         android:textColor="@color/colorPink"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_tv" />
+        app:layout_constraintTop_toBottomOf="@id/title_tv"
+        tools:text="@string/genre" />
 
     <ImageView
         android:id="@+id/star1_iv"

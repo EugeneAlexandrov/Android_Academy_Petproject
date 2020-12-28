@@ -1,15 +1,15 @@
 package com.mybclym.androidacademy.petproject.DataModel
 
 data class Movie(
-    val id: Int,
-    val title: String,
-    val overview: String,
-    val poster: String,
-    val backdrop: String,
-    val ratings: Float,
-    val numberOfRatings: Int,
-    val minimumAge: Int,
-    val runtime: Int,
-    val genres: List<Genre>,
-    val actors: List<Actor>
+    val id: Int = 0,
+    val title: String = "",
+    val overview: String = "",
+    val poster: String = "",
+    val backdrop: String = "",
+    val ratings: Float = 0f,
+    val numberOfRatings: Int = 0,
+    val minimumAge: Int = 0,
+    val runtime: Int = 0,
+    val genres: List<Genre> = emptyList(),
+    val actors: List<Actor> = emptyList()
 )
