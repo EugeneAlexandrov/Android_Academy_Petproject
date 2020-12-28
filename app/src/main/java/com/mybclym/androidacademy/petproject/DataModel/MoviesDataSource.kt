@@ -2,6 +2,7 @@ package com.mybclym.androidacademy.petproject.DataModel
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 interface MoviesDataSource {
@@ -13,6 +14,7 @@ class MoviesDataSourceImpl(private val context: Context) : MoviesDataSource {
 
     override suspend fun getMoviesAsync(): List<Movie> =
         withContext(Dispatchers.IO) {
+            delay(2000)
             loadMovies(context)
         }
 

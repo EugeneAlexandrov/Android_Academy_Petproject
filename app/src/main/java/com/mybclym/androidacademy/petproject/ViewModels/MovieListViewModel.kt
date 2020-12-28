@@ -10,9 +10,14 @@ class MovieListViewModel(private val dataSource: MoviesDataSource) : ViewModel()
     private val movieListLiveData = MutableLiveData<List<Movie>>(emptyList())
     val movieList: LiveData<List<Movie>> get() = movieListLiveData
 
+    private val loadingState = MutableLiveData<Boolean>(false)
+    val loading: LiveData<Boolean> get() = loadingState
+
     fun loadMoviesList() {
         viewModelScope.launch {
+            loadingState.value = true
             movieListLiveData.value = dataSource.getMoviesAsync()
+            loadingState.value = false
         }
     }
 

@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.mybclym.androidacademy.petproject.DataModel.Movie
-import com.mybclym.androidacademy.petproject.ViewModels.MovieListViewModel
 import com.mybclym.androidacademy.petproject.R
+import com.mybclym.androidacademy.petproject.ViewModels.MovieListViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -19,8 +19,10 @@ class FragmentMoviesList : BaseFragment() {
     // контекст фрагмента - активити, имплементит OnMovieClickListener
     private var movieClickListener: OnMovieClickListener? = null
     private var moviesRecycler: RecyclerView? = null
+    private var progressBar: View? = null
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var viewModel: MovieListViewModel
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,15 +42,22 @@ class FragmentMoviesList : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findView(view)
-        observeMoviesList()
-    }
-
-    private fun observeMoviesList() {
         viewModel = ViewModelProvider(
-            this, dataProvider.movieListViewModelFactory()
+            this, dataProvider.moviesViewModelFactory()
         ).get(MovieListViewModel::class.java)
         viewModel.loadMoviesList()
-        viewModel.movieList.observe(this.viewLifecycleOwner, this::bindView)
+        viewModel.loading.observe(this.viewLifecycleOwner, this::setLoading)
+        viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesList)
+    }
+
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            progressBar?.visibility = View.VISIBLE
+            moviesRecycler?.visibility = View.GONE
+        } else {
+            progressBar?.visibility = View.GONE
+            moviesRecycler?.visibility = View.VISIBLE
+        }
     }
 
     private fun findView(view: View) {
@@ -56,9 +65,10 @@ class FragmentMoviesList : BaseFragment() {
         //прокидываем дальше лисенер
         movieAdapter = MovieAdapter(movieClickListener)
         moviesRecycler?.adapter = movieAdapter
+        progressBar = view.findViewById(R.id.progress_bar)
     }
 
-    private fun bindView(movieList: List<Movie>) {
+    private fun updateMoviesList(movieList: List<Movie>) {
         movieAdapter.setUpMoviesList(movieList)
     }
 
@@ -66,6 +76,7 @@ class FragmentMoviesList : BaseFragment() {
         //отвязываем лисенер и ресайклер
         movieClickListener = null
         moviesRecycler = null
+        progressBar=null
         super.onDetach()
     }
 }

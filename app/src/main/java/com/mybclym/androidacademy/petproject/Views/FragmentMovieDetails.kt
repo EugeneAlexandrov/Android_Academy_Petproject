@@ -3,12 +3,12 @@ package com.mybclym.androidacademy.petproject.Views
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,8 +16,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Movie
 import com.mybclym.androidacademy.petproject.R
 import com.mybclym.androidacademy.petproject.ViewModels.MovieItemViewModel
-import com.mybclym.androidacademy.petproject.ViewModels.MovieListViewModel
-import kotlinx.coroutines.*
 
 /**
  * A simple [Fragment] subclass.
@@ -37,6 +35,11 @@ class FragmentMovieDetails : BaseFragment() {
     private var actorsRecyclerView: RecyclerView? = null
     private var actorAdapter: ActorAdapter? = null
 
+    private val imageOption = RequestOptions()
+        .placeholder(R.drawable.no_image)
+        .fallback(R.drawable.no_image)
+        .fitCenter()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnMovieClickListener) {
@@ -55,20 +58,16 @@ class FragmentMovieDetails : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         //id фильма пробрасывается от адаптера до активити и из активити в фрагмент
         findViews(view)
-        observeMovieItem()
-        view.findViewById<TextView>(R.id.back_btn_tv).apply {
-            setOnClickListener {
-                movieClickListener?.showMovieList()
-            }
-        }
-    }
 
-    private fun observeMovieItem() {
         movieItemViewModel = ViewModelProvider(
-            this, dataProvider.movieItemViewModelFactory()
+            this, dataProvider.moviesViewModelFactory()
         ).get(MovieItemViewModel::class.java)
         movieItemViewModel.loadMovieItem(movieID() ?: 0)
         movieItemViewModel.movieItem.observe(this.viewLifecycleOwner, this::bindViews)
+
+        view.findViewById<TextView>(R.id.back_btn_tv).setOnClickListener {
+            movieClickListener?.showMovieList()
+        }
     }
 
     override fun onDetach() {
@@ -91,32 +90,25 @@ class FragmentMovieDetails : BaseFragment() {
     }
 
     private fun bindViews(movie: Movie) {
-        actorAdapter?.setUpActorsList(movie?.actors)
-        storyLine.text = movie?.overview
-        ageRestriction.text = movie?.minimumAge.toString()
-        reviews.text = movie?.numberOfRatings.toString()
-        genre.text = movie?.let {
+        actorAdapter?.setUpActorsList(movie.actors)
+        storyLine.text = movie.overview
+        ageRestriction.text = movie.minimumAge.toString()
+        reviews.text = movie.numberOfRatings.toString()
+        genre.text = movie.let {
             it.genres.joinToString { genre -> genre.name }
         }
-        title.text = movie?.title
+        title.text = movie.title
         Glide.with(view?.context)
-            .load(movie?.backdrop)
+            .load(movie.backdrop)
             .apply(imageOption)
             .into(poster)
     }
 
     private fun movieID(): Int? =
-        arguments?.let {
-            it.getInt(PARAM_MOVIE_ID, 0)
-        }
+        arguments?.getInt(PARAM_MOVIE_ID, 0)
 
     companion object {
         private const val PARAM_MOVIE_ID = "movie_ID"
-
-        private val imageOption = RequestOptions()
-            .placeholder(R.drawable.no_image)
-            .fallback(R.drawable.no_image)
-            .fitCenter()
 
         //в активити вызывается фрагмент с параметром
         fun newInstance(
@@ -138,7 +130,7 @@ class FragmentMovieDetails : BaseFragment() {
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
-            if (parent.getChildAdapterPosition(view) != (parent.getAdapter()?.getItemCount()
+            if (parent.getChildAdapterPosition(view) != (parent.adapter?.itemCount
                     ?: 0) - 1
             ) {
                 outRect.right = 24
