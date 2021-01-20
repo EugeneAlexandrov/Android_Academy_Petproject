@@ -16,6 +16,7 @@ class MovieListViewModel(private val dataSource: MoviesDataSource) : ViewModel()
     fun loadMoviesList() {
         viewModelScope.launch {
             loadingState.value = true
+            dataSource.getConfig()
             movieListLiveData.value = dataSource.getMoviesAsync()
             loadingState.value = false
         }

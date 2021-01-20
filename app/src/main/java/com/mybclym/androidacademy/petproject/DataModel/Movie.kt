@@ -10,6 +10,6 @@ data class Movie(
     val numberOfRatings: Int = 0,
     val minimumAge: Int = 0,
     val runtime: Int = 0,
-    val genres: List<Genre> = emptyList(),
-    val actors: List<Actor> = emptyList()
+    var genres: List<Genre> = emptyList(),
+    var actors: List<Actor> = emptyList()
 )

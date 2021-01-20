@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import coil.load
 import com.mybclym.androidacademy.petproject.DataModel.Actor
 import com.mybclym.androidacademy.petproject.R
 
@@ -43,17 +42,10 @@ class ItemActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView? = itemView.findViewById(R.id.actor_tv)
 
     fun bind(actor: Actor?) {
-        Glide.with(itemView.context)
-            .load(actor?.picture)
-            .apply(imageOption)
-            .into(image)
+        image?.load(actor?.picture){
+            crossfade(true)
+            placeholder(R.drawable.no_image)
+        }
         name?.text = actor?.name
-    }
-
-    companion object {
-        private val imageOption = RequestOptions()
-            .placeholder(R.drawable.no_image)
-            .fallback(R.drawable.no_image)
-            .fitCenter()
     }
 }
