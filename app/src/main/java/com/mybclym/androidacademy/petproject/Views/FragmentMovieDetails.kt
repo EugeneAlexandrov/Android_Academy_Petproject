@@ -11,8 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import coil.load
 import com.mybclym.androidacademy.petproject.DataModel.Movie
 import com.mybclym.androidacademy.petproject.R
 import com.mybclym.androidacademy.petproject.ViewModels.MovieItemViewModel
@@ -26,7 +25,7 @@ class FragmentMovieDetails : BaseFragment() {
     private var movieClickListener: OnMovieClickListener? = null
     private lateinit var movieItemViewModel: MovieItemViewModel
 
-    private lateinit var poster: ImageView
+    private lateinit var backpath: ImageView
     private lateinit var ageRestriction: TextView
     private lateinit var reviews: TextView
     private lateinit var genre: TextView
@@ -34,11 +33,6 @@ class FragmentMovieDetails : BaseFragment() {
     private lateinit var storyLine: TextView
     private var actorsRecyclerView: RecyclerView? = null
     private var actorAdapter: ActorAdapter? = null
-
-    private val imageOption = RequestOptions()
-        .placeholder(R.drawable.no_image)
-        .fallback(R.drawable.no_image)
-        .fitCenter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,7 +52,6 @@ class FragmentMovieDetails : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         //id фильма пробрасывается от адаптера до активити и из активити в фрагмент
         findViews(view)
-
         movieItemViewModel = ViewModelProvider(
             this, dataProvider.moviesViewModelFactory()
         ).get(MovieItemViewModel::class.java)
@@ -70,10 +63,10 @@ class FragmentMovieDetails : BaseFragment() {
         }
     }
 
-    override fun onDetach() {
+    override fun onDestroyView() {
         movieClickListener = null
         actorsRecyclerView = null
-        super.onDetach()
+        super.onDestroyView()
     }
 
     private fun findViews(view: View) {
@@ -81,7 +74,7 @@ class FragmentMovieDetails : BaseFragment() {
         actorAdapter = ActorAdapter()
         actorsRecyclerView?.adapter = actorAdapter
         actorsRecyclerView?.addItemDecoration(HorisontalSpaceItemDecoration())
-        poster = view.findViewById(R.id.background_poster_iv)
+        backpath = view.findViewById(R.id.background_poster_iv)
         ageRestriction = view.findViewById(R.id.age_restrictions_tv)
         reviews = view.findViewById(R.id.reviews_count_tv)
         genre = view.findViewById(R.id.movie_genre_tv)
@@ -98,10 +91,7 @@ class FragmentMovieDetails : BaseFragment() {
             it.genres.joinToString { genre -> genre.name }
         }
         title.text = movie.title
-        Glide.with(view?.context)
-            .load(movie.backdrop)
-            .apply(imageOption)
-            .into(poster)
+        backpath.load(movie.backdrop)
     }
 
     private fun movieID(): Int? =

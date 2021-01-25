@@ -16,7 +16,7 @@ class MyApp : Application(), DataProvider {
 
     override fun onCreate() {
         super.onCreate()
-        movieDataSource = MoviesDataSourceImpl(this)
+        movieDataSource = MoviesDataSourceImpl(networkModule = NetworkModule())
         moviesViewModelFactory = MoviesViewModelsFactory(movieDataSource)
     }
 

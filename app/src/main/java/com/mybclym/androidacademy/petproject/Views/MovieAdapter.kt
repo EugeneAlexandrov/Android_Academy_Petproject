@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mybclym.androidacademy.petproject.DataModel.Movie
@@ -56,23 +57,15 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val duration: TextView? = itemView.findViewById(R.id.duration_tv)
 
     fun bind(movie: Movie) {
-        Glide.with(itemView.context)
-            .load(movie.poster)
-            .apply(imageOption)
-            .into(poster)
-
         ageRestriction?.text =
             itemView.context.getString(R.string.age_restriction, movie.minimumAge)
         reviews?.text = movie.numberOfRatings.toString()
         genre?.text = movie.genres.joinToString { it.name }
         title?.text = movie.title
         duration?.text = movie.runtime.toString()
-    }
-
-    companion object {
-        private val imageOption = RequestOptions()
-            .placeholder(R.drawable.no_image)
-            .fallback(R.drawable.no_image)
-            .fitCenter()
+        poster?.load(movie.poster) {
+            crossfade(true)
+            placeholder(R.drawable.no_image)
+        }
     }
 }

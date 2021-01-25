@@ -72,12 +72,12 @@ class FragmentMoviesList : BaseFragment() {
         movieAdapter.setUpMoviesList(movieList)
     }
 
-    override fun onDetach() {
+    override fun onDestroyView() {
         //отвязываем лисенер и ресайклер
         movieClickListener = null
         moviesRecycler = null
-        progressBar=null
-        super.onDetach()
+        progressBar = null
+        super.onDestroyView()
     }
 }
 
