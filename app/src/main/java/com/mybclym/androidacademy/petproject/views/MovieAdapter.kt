@@ -1,4 +1,4 @@
-package com.mybclym.androidacademy.petproject.Views
+package com.mybclym.androidacademy.petproject.views
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.mybclym.androidacademy.petproject.DataModel.Movie
+import com.mybclym.androidacademy.petproject.dataModel.domainModel.Movie
 import com.mybclym.androidacademy.petproject.R
 
 //у адаптера есть ссылка на листенер, чтобы запустить фрагмент из активити
@@ -54,15 +52,15 @@ class ItemMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val reviews: TextView? = itemView.findViewById(R.id.reviews_count_tv)
     private val genre: TextView? = itemView.findViewById(R.id.movie_genre_tv)
     private val title: TextView? = itemView.findViewById(R.id.title_tv)
-    private val duration: TextView? = itemView.findViewById(R.id.duration_tv)
+    private val release: TextView? = itemView.findViewById(R.id.release_tv)
 
     fun bind(movie: Movie) {
         ageRestriction?.text =
             itemView.context.getString(R.string.age_restriction, movie.minimumAge)
         reviews?.text = movie.numberOfRatings.toString()
-        genre?.text = movie.genres.joinToString { it.name }
+        genre?.text = movie.genres?.joinToString { it.name }
         title?.text = movie.title
-        duration?.text = movie.runtime.toString()
+        release?.text = movie.release.toString()
         poster?.load(movie.poster) {
             crossfade(true)
             placeholder(R.drawable.no_image)

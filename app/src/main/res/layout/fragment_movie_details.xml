@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
-    tools:context=".Views.FragmentMovieDetails">
+    tools:context=".views.FragmentMovieDetails">
 
     <ImageView
         android:id="@+id/background_poster_iv"
@@ -171,7 +171,23 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/storyline_hardcode_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/storyline_hardcode_tv"
+        tools:text="awdawdawda" />
+
+    <TextView
+        android:id="@+id/runtime_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/border_padding"
+        android:layout_marginVertical="@dimen/content_padding"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/roboto_thin"
+        android:text="120 min"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/storyline_tv"
+        tools:layout_editor_absoluteY="497dp" />
 
     <TextView
         android:id="@+id/cast_hardcode_tv"
@@ -183,7 +199,7 @@
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/storyline_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/runtime_tv" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/actors_rv"
@@ -197,6 +213,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cast_hardcode_tv"
         tools:listitem="@layout/actor_item" />
+
+    <ProgressBar
+        android:id="@+id/actors_progress_bar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:foregroundTint="@color/colorPink"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/actors_rv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cast_hardcode_tv"
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

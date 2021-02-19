@@ -1,16 +1,17 @@
-package com.mybclym.androidacademy.petproject.Views
+package com.mybclym.androidacademy.petproject.views
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.mybclym.androidacademy.petproject.DataModel.Movie
+import com.mybclym.androidacademy.petproject.dataModel.domainModel.Movie
 import com.mybclym.androidacademy.petproject.R
-import com.mybclym.androidacademy.petproject.ViewModels.MovieListViewModel
+import com.mybclym.androidacademy.petproject.viewModels.MovieListViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -45,9 +46,16 @@ class FragmentMoviesList : BaseFragment() {
         viewModel = ViewModelProvider(
             this, dataProvider.moviesViewModelFactory()
         ).get(MovieListViewModel::class.java)
-        viewModel.loadMoviesList()
         viewModel.loading.observe(this.viewLifecycleOwner, this::setLoading)
         viewModel.movieList.observe(this.viewLifecycleOwner, this::updateMoviesList)
+        viewModel.eventNetworkError.observe(this.viewLifecycleOwner, this::onNetworkError)
+    }
+
+    private fun onNetworkError(networkErrorShown:Boolean) {
+        if (networkErrorShown) {
+            Toast.makeText(activity, "Network Error", Toast.LENGTH_LONG).show()
+            viewModel.onNetworkErrorShown()
+        }
     }
 
     private fun setLoading(loading: Boolean) {

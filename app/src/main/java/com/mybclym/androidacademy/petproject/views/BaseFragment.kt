@@ -1,4 +1,4 @@
-package com.mybclym.androidacademy.petproject.Views
+package com.mybclym.androidacademy.petproject.views
 
 import android.content.Context
 import androidx.fragment.app.Fragment

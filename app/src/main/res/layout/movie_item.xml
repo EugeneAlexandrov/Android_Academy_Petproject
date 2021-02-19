@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="170dp"
-    android:layout_height="296dp"
+    android:layout_height="300dp"
     android:layout_margin="@dimen/content_padding"
     android:backgroundTint="@color/colorBlack"
     app:cardCornerRadius="@dimen/card_corner_radius"
@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="170dp"
-        android:layout_height="296dp"
+        android:layout_height="300dp"
         android:background="@drawable/movies_list_item_gradient">
 
         <ImageView
@@ -73,7 +73,7 @@
             android:layout_marginVertical="@dimen/content_padding"
             android:fontFamily="@font/roboto"
             android:textColor="@color/colorPink"
-            android:textSize="8sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/star1_iv"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="@string/genre" />
@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/content_padding"
             android:textColor="@color/colorGray"
-            android:textSize="8sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/star5_iv"
             app:layout_constraintStart_toEndOf="@id/guideline"
@@ -163,15 +163,15 @@
             tools:text="Avengers: End Game" />
 
         <TextView
-            android:id="@+id/duration_tv"
+            android:id="@+id/release_tv"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/content_padding"
             android:textColor="@color/colorGray"
-            android:textSize="8sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_tv"
-            tools:text="139 MIN" />
+            tools:text="2016-08-03" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

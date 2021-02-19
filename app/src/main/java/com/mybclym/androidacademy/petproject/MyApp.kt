@@ -1,25 +1,28 @@
 package com.mybclym.androidacademy.petproject
 
 import android.app.Application
-import com.mybclym.androidacademy.petproject.DataModel.MoviesDataSource
-import com.mybclym.androidacademy.petproject.DataModel.MoviesDataSourceImpl
-import com.mybclym.androidacademy.petproject.ViewModels.MoviesViewModelsFactory
+import com.mybclym.androidacademy.petproject.dataModel.*
+import com.mybclym.androidacademy.petproject.viewModels.MoviesViewModelsFactory
 
 interface DataProvider {
-    fun dataSource(): MoviesDataSource
     fun moviesViewModelFactory(): MoviesViewModelsFactory
+    fun movieRepository(): MovieRepositoryImp
 }
 
 class MyApp : Application(), DataProvider {
-    private lateinit var movieDataSource: MoviesDataSource
+    private lateinit var localDataSource: LocalDataSource
+    private lateinit var remoteDataSource: RemoteDataSource
+    private lateinit var movieRepository: MovieRepositoryImp
     private lateinit var moviesViewModelFactory: MoviesViewModelsFactory
 
     override fun onCreate() {
         super.onCreate()
-        movieDataSource = MoviesDataSourceImpl(networkModule = NetworkModule())
-        moviesViewModelFactory = MoviesViewModelsFactory(movieDataSource)
+        localDataSource = LocalDataSourceImpl(applicationContext)
+        remoteDataSource = RemoteDataSourceImpl(NetworkModule)
+        movieRepository = MovieRepositoryImp(localDataSource, remoteDataSource)
+        moviesViewModelFactory = MoviesViewModelsFactory(movieRepository)
     }
 
-    override fun dataSource(): MoviesDataSource = movieDataSource
     override fun moviesViewModelFactory(): MoviesViewModelsFactory = moviesViewModelFactory
+    override fun movieRepository(): MovieRepositoryImp = movieRepository
 }

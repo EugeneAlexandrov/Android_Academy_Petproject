@@ -1,7 +1,8 @@
 package com.mybclym.androidacademy.petproject
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.mybclym.androidacademy.petproject.Services.MovieApiService
+import com.mybclym.androidacademy.petproject.Response.*
+import com.mybclym.androidacademy.petproject.services.MovieApiService
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.*
@@ -9,11 +10,37 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
+import retrofit2.http.GET
+import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
 private const val API_KEY = "09212fc7232b908173611c963837e669"
 
-class NetworkModule {
+interface MovieApiService {
+    @GET("movie/now_playing")
+    suspend fun getNowPlaying(
+    ): NowPlayingResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int
+    ): DetailsResponse
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieActors(
+        @Path("movie_id") movieId: Int
+    ): CreditsResponse
+
+    @GET("configuration")
+    suspend fun getConfiguration(
+    ): ConfigurationResponse
+
+    @GET("genre/movie/list")
+    suspend fun getGenres(
+    ): GenresResponse
+}
+
+object NetworkModule {
 
     private val loggingInterceptor =
         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

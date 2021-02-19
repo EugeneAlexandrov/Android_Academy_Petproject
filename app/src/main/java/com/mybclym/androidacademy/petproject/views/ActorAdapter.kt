@@ -1,4 +1,4 @@
-package com.mybclym.androidacademy.petproject.Views
+package com.mybclym.androidacademy.petproject.views
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.mybclym.androidacademy.petproject.DataModel.Actor
+import com.mybclym.androidacademy.petproject.dataModel.domainModel.Actor
 import com.mybclym.androidacademy.petproject.R
 
 class ActorAdapter() : RecyclerView.Adapter<ItemActorViewHolder>() {
